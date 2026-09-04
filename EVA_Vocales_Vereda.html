@@ -1,0 +1,474 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>EVA — Las Vocales de mi Vereda | Grado Transición</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: 'Segoe UI', Arial, sans-serif; background: #F0F2F5; color: #333; }
+
+  /* HEADER */
+  .header { background: linear-gradient(135deg, #1565C0, #0D47A1); color: white; padding: 0; position: sticky; top: 0; z-index: 100; box-shadow: 0 2px 8px rgba(0,0,0,0.2); }
+  .header-top { display: flex; align-items: center; justify-content: space-between; padding: 12px 24px; }
+  .header-logo { display: flex; align-items: center; gap: 12px; }
+  .header-logo .icon { width: 42px; height: 42px; background: #FF6F00; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 22px; }
+  .header-logo h1 { font-size: 18px; font-weight: 600; }
+  .header-logo span { font-size: 12px; opacity: 0.8; }
+  .header-user { display: flex; align-items: center; gap: 10px; font-size: 13px; }
+  .avatar { width: 34px; height: 34px; background: #4CAF50; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold; font-size: 14px; }
+
+  /* NAV TABS */
+  .nav-tabs { display: flex; background: rgba(0,0,0,0.15); overflow-x: auto; }
+  .nav-tab { padding: 10px 20px; color: rgba(255,255,255,0.7); font-size: 13px; cursor: pointer; border-bottom: 3px solid transparent; white-space: nowrap; text-decoration: none; transition: all 0.2s; }
+  .nav-tab:hover { color: white; background: rgba(255,255,255,0.1); }
+  .nav-tab.active { color: white; border-bottom-color: #FF6F00; font-weight: 600; }
+
+  /* MAIN */
+  .main { max-width: 1100px; margin: 0 auto; padding: 20px; }
+
+  /* SECTION */
+  .section { display: none; }
+  .section.active { display: block; }
+
+  /* CARDS */
+  .card { background: white; border-radius: 12px; padding: 24px; margin-bottom: 16px; box-shadow: 0 1px 4px rgba(0,0,0,0.08); }
+  .card h2 { font-size: 18px; color: #0D47A1; margin-bottom: 12px; display: flex; align-items: center; gap: 8px; }
+  .card h3 { font-size: 15px; color: #1565C0; margin: 16px 0 8px; }
+  .card p { font-size: 14px; line-height: 1.6; margin-bottom: 8px; }
+  .card-accent { border-left: 4px solid #FF6F00; }
+  .card-green { border-left: 4px solid #4CAF50; }
+  .card-blue { border-left: 4px solid #1565C0; }
+
+  /* BANNER */
+  .banner { background: linear-gradient(135deg, #1565C0, #42A5F5); color: white; border-radius: 12px; padding: 30px; margin-bottom: 20px; }
+  .banner h2 { font-size: 24px; margin-bottom: 8px; color: white; }
+  .banner p { font-size: 14px; opacity: 0.9; }
+
+  /* GRID */
+  .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  .grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+  @media (max-width: 768px) { .grid-2, .grid-3 { grid-template-columns: 1fr; } }
+
+  /* ACTIVITY CARD */
+  .activity { background: white; border-radius: 12px; overflow: hidden; box-shadow: 0 1px 4px rgba(0,0,0,0.08); }
+  .activity-header { padding: 16px 20px; color: white; font-weight: 600; font-size: 14px; }
+  .activity-body { padding: 16px 20px; }
+  .activity-body p { font-size: 13px; margin-bottom: 6px; }
+  .activity-btn { display: inline-block; padding: 8px 20px; border-radius: 6px; color: white; text-decoration: none; font-size: 13px; font-weight: 600; margin-top: 8px; cursor: pointer; }
+
+  /* ANNOUNCEMENT */
+  .announcement { display: flex; gap: 14px; padding: 14px 0; border-bottom: 1px solid #EEE; }
+  .announcement:last-child { border-bottom: none; }
+  .ann-icon { width: 36px; height: 36px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 16px; flex-shrink: 0; }
+  .ann-content { flex: 1; }
+  .ann-content strong { font-size: 13px; color: #333; }
+  .ann-content p { font-size: 12px; color: #666; margin: 2px 0 0; }
+  .ann-date { font-size: 11px; color: #999; }
+
+  /* FORUM */
+  .forum-post { background: #F8F9FA; border-radius: 10px; padding: 14px 18px; margin-bottom: 10px; }
+  .forum-post .author { font-size: 12px; font-weight: 600; color: #1565C0; }
+  .forum-post .msg { font-size: 13px; margin: 6px 0; }
+  .forum-post .time { font-size: 11px; color: #999; }
+
+  /* TABLE */
+  .grade-table { width: 100%; border-collapse: collapse; font-size: 13px; }
+  .grade-table th { background: #0D47A1; color: white; padding: 10px 12px; text-align: left; }
+  .grade-table td { padding: 10px 12px; border-bottom: 1px solid #EEE; }
+  .grade-table tr:nth-child(even) { background: #F8FAFF; }
+  .badge { display: inline-block; padding: 3px 10px; border-radius: 12px; font-size: 11px; font-weight: 600; }
+  .badge-green { background: #E8F5E9; color: #2E7D32; }
+  .badge-yellow { background: #FFF3E0; color: #E65100; }
+  .badge-blue { background: #E3F2FD; color: #1565C0; }
+
+  /* INFO BOX */
+  .info-box { background: #E3F2FD; border-radius: 8px; padding: 14px 18px; margin: 12px 0; }
+  .info-box p { font-size: 13px; color: #0D47A1; margin: 0; }
+
+  /* AGENDA */
+  .agenda-item { display: flex; gap: 14px; padding: 12px 0; border-bottom: 1px solid #F0F0F0; }
+  .agenda-date { background: #1565C0; color: white; border-radius: 8px; padding: 8px 12px; text-align: center; min-width: 56px; }
+  .agenda-date .day { font-size: 20px; font-weight: bold; }
+  .agenda-date .month { font-size: 10px; text-transform: uppercase; }
+
+  /* FOOTER */
+  .footer { background: #0D47A1; color: white; text-align: center; padding: 20px; margin-top: 30px; font-size: 12px; }
+  .footer a { color: #90CAF9; }
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<div class="header">
+  <div class="header-top">
+    <div class="header-logo">
+      <div class="icon">🔤</div>
+      <div>
+        <h1>Las Vocales de mi Vereda</h1>
+        <span>Grado Transición — I.E. Técnica Alfonso Vanegas Sierra</span>
+      </div>
+    </div>
+    <div class="header-user">
+      <span>Prof. Delia Bastidas</span>
+      <div class="avatar">DB</div>
+    </div>
+  </div>
+  <div class="nav-tabs">
+    <a class="nav-tab active" onclick="showSection('inicio')">🏠 Inicio</a>
+    <a class="nav-tab" onclick="showSection('formacion')">📚 Formación</a>
+    <a class="nav-tab" onclick="showSection('actividades')">🎮 Actividades</a>
+    <a class="nav-tab" onclick="showSection('evaluacion')">📝 Evaluación</a>
+    <a class="nav-tab" onclick="showSection('gestion')">⚙️ Gestión</a>
+    <a class="nav-tab" onclick="showSection('comunicacion')">💬 Comunicación</a>
+    <a class="nav-tab" onclick="showSection('servicios')">📋 Servicios</a>
+  </div>
+</div>
+
+<div class="main">
+
+<!-- ===== INICIO ===== -->
+<div class="section active" id="inicio">
+  <div class="banner">
+    <h2>¡Bienvenidos al Mundo de las Vocales! 🌾</h2>
+    <p>Entorno Virtual de Aprendizaje para estudiantes de grado transición. Aquí exploraremos las vocales A, E, I, O, U a través de los sonidos y objetos de nuestra vereda en San Miguel de Sema.</p>
+  </div>
+
+  <div class="grid-2">
+    <div class="card card-blue">
+      <h2>📖 Información del Curso</h2>
+      <p><strong>Tema:</strong> Reconocimiento fonológico y visual de las vocales</p>
+      <p><strong>Grado:</strong> Transición (5 años)</p>
+      <p><strong>Institución:</strong> I.E. Técnica Alfonso Vanegas Sierra</p>
+      <p><strong>Municipio:</strong> San Miguel de Sema, Boyacá</p>
+      <p><strong>Docente:</strong> Delia Liliana Bastidas Velandia</p>
+      <p><strong>Duración:</strong> 8 semanas</p>
+      <p><strong>DBA:</strong> DBA 7 Transición — Identifica las letras del alfabeto y las utiliza para comunicarse.</p>
+    </div>
+    <div class="card card-accent">
+      <h2>🎯 Objetivos de Aprendizaje</h2>
+      <p>Al finalizar este curso, los estudiantes serán capaces de:</p>
+      <p>✅ Reconocer visualmente cada una de las cinco vocales (A, E, I, O, U).</p>
+      <p>✅ Asociar el sonido (fonema) de cada vocal con su representación escrita (grafema).</p>
+      <p>✅ Identificar la vocal inicial de palabras comunes del entorno rural.</p>
+      <p>✅ Seleccionar la vocal correcta en actividades interactivas digitales.</p>
+    </div>
+  </div>
+
+  <div class="card">
+    <h2>📢 Últimos Anuncios</h2>
+    <div class="announcement">
+      <div class="ann-icon" style="background: #E3F2FD; color: #1565C0;">📌</div>
+      <div class="ann-content">
+        <strong>Semana 1: ¡Iniciamos nuestro viaje por las vocales!</strong>
+        <p>Queridos padres de familia, esta semana comenzamos la exploración de las vocales. Les comparto un video introductorio para ver en casa con los niños.</p>
+      </div>
+      <div class="ann-date">Sem. 1</div>
+    </div>
+    <div class="announcement">
+      <div class="ann-icon" style="background: #FFF3E0; color: #FF6F00;">📋</div>
+      <div class="ann-content">
+        <strong>Evaluación diagnóstica programada</strong>
+        <p>Esta semana aplicaremos "El Baúl de los Sonidos de la Vereda" para conocer cuánto saben los niños sobre las vocales.</p>
+      </div>
+      <div class="ann-date">Sem. 2</div>
+    </div>
+    <div class="announcement">
+      <div class="ann-icon" style="background: #E8F5E9; color: #2E7D32;">🎉</div>
+      <div class="ann-content">
+        <strong>¡La vocal A fue un éxito!</strong>
+        <p>Los niños disfrutaron mucho las actividades con la Abeja, el Árbol y el Agua. Esta semana avanzamos con la E y la I.</p>
+      </div>
+      <div class="ann-date">Sem. 4</div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== FORMACIÓN ===== -->
+<div class="section" id="formacion">
+  <div class="card">
+    <h2>📚 Área de Formación</h2>
+    <p>Contenidos, actividades y materiales didácticos organizados por semanas para el desarrollo de la conciencia fonológica.</p>
+  </div>
+
+  <div class="grid-2">
+    <div class="card card-blue">
+      <h3>📹 Video Introductorio</h3>
+      <p>Video animado sobre las vocales con imágenes del entorno rural de San Miguel de Sema. Para ver en casa con los padres antes de la primera sesión presencial.</p>
+      <p style="font-size:12px; color:#999; margin-top:8px;">[Insertar enlace al video]</p>
+    </div>
+    <div class="card card-accent">
+      <h3>🖼️ Tarjetas de Vocales</h3>
+      <p>Material visual diseñado en Canva con imágenes grandes y coloridas de elementos rurales para cada vocal: A-Abeja, E-Escoba, I-Iglesia, O-Oveja, U-Uvas.</p>
+      <p style="font-size:12px; color:#999; margin-top:8px;">[Insertar enlace a las tarjetas]</p>
+    </div>
+  </div>
+
+  <div class="card">
+    <h2>📅 Contenidos por Semana</h2>
+    <div class="agenda-item">
+      <div class="agenda-date"><div class="day">1-2</div><div class="month">SEM</div></div>
+      <div><strong>Exploración y Diagnóstico</strong><p style="font-size:13px;">Video introductorio + Evaluación diagnóstica con Google Forms</p></div>
+    </div>
+    <div class="agenda-item">
+      <div class="agenda-date"><div class="day">3</div><div class="month">SEM</div></div>
+      <div><strong>Vocal A: Abeja, Árbol, Agua</strong><p style="font-size:13px;">Actividades interactivas en Wordwall + Tarjetas visuales en Canva</p></div>
+    </div>
+    <div class="agenda-item">
+      <div class="agenda-date"><div class="day">4</div><div class="month">SEM</div></div>
+      <div><strong>Vocales E e I: Escoba, Estrella, Iglesia, Insecto</strong><p style="font-size:13px;">Juegos de asociación en Wordwall + Refuerzo con tarjetas</p></div>
+    </div>
+    <div class="agenda-item">
+      <div class="agenda-date"><div class="day">5</div><div class="month">SEM</div></div>
+      <div><strong>Vocales O y U: Oveja, Olla, Uvas, Uniforme</strong><p style="font-size:13px;">Actividades interactivas + Refuerzo personalizado</p></div>
+    </div>
+    <div class="agenda-item">
+      <div class="agenda-date" style="background:#FF6F00;"><div class="day">6-7</div><div class="month">SEM</div></div>
+      <div><strong>Consolidación y Evaluación Formativa</strong><p style="font-size:13px;">"Las Vocales Viajeras de la Vereda" en Wordwall + Refuerzo</p></div>
+    </div>
+    <div class="agenda-item">
+      <div class="agenda-date" style="background:#2E7D32;"><div class="day">8</div><div class="month">SEM</div></div>
+      <div><strong>Evaluación Final</strong><p style="font-size:13px;">"Mi Álbum de Vocales" en Kahoot! + Análisis de resultados</p></div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== ACTIVIDADES ===== -->
+<div class="section" id="actividades">
+  <div class="card">
+    <h2>🎮 Actividades Interactivas</h2>
+    <p>Actividades lúdicas diseñadas con herramientas digitales para el reconocimiento de vocales. Cada actividad utiliza imágenes del entorno rural de San Miguel de Sema.</p>
+  </div>
+
+  <div class="grid-3">
+    <div class="activity">
+      <div class="activity-header" style="background: #1565C0;">🐝 Vocal A — La Abeja</div>
+      <div class="activity-body">
+        <p><strong>Tipo:</strong> Asociación imagen-vocal</p>
+        <p><strong>Plataforma:</strong> Wordwall</p>
+        <p>Arrastra las imágenes que empiezan por A: Abeja, Árbol, Agua.</p>
+        <span class="activity-btn" style="background:#1565C0;">[Abrir actividad]</span>
+      </div>
+    </div>
+    <div class="activity">
+      <div class="activity-header" style="background: #FF6F00;">🧹 Vocales E e I</div>
+      <div class="activity-body">
+        <p><strong>Tipo:</strong> Juego de clasificación</p>
+        <p><strong>Plataforma:</strong> Wordwall</p>
+        <p>Clasifica: Escoba y Estrella → E. Iglesia e Insecto → I.</p>
+        <span class="activity-btn" style="background:#FF6F00;">[Abrir actividad]</span>
+      </div>
+    </div>
+    <div class="activity">
+      <div class="activity-header" style="background: #2E7D32;">🐑 Vocales O y U</div>
+      <div class="activity-body">
+        <p><strong>Tipo:</strong> Emparejamiento</p>
+        <p><strong>Plataforma:</strong> Wordwall</p>
+        <p>Empareja: Oveja y Olla → O. Uvas y Uniforme → U.</p>
+        <span class="activity-btn" style="background:#2E7D32;">[Abrir actividad]</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="card" style="margin-top: 16px;">
+    <h2>🎨 Material de Apoyo — Canva</h2>
+    <p>Tarjetas visuales de cada vocal diseñadas en Canva con elementos del entorno rural. Pueden descargarse e imprimirse para refuerzo en casa.</p>
+    <p style="font-size:12px; color:#999;">[Insertar enlace al material en Canva]</p>
+  </div>
+</div>
+
+<!-- ===== EVALUACIÓN ===== -->
+<div class="section" id="evaluacion">
+  <div class="card">
+    <h2>📝 Área de Evaluación</h2>
+    <p>Tres evaluaciones mediadas por TIC para acompañar el proceso de aprendizaje del reconocimiento de vocales.</p>
+  </div>
+
+  <div class="grid-3">
+    <div class="activity">
+      <div class="activity-header" style="background: #1565C0;">🔍 Evaluación Diagnóstica</div>
+      <div class="activity-body">
+        <p><strong>"El Baúl de los Sonidos de la Vereda"</strong></p>
+        <p>Google Forms — Cuestionario táctil</p>
+        <p><span class="badge badge-blue">Semanas 1-2</span></p>
+        <span class="activity-btn" style="background:#1565C0;">[Abrir evaluación]</span>
+      </div>
+    </div>
+    <div class="activity">
+      <div class="activity-header" style="background: #FF6F00;">📊 Evaluación Formativa</div>
+      <div class="activity-body">
+        <p><strong>"Las Vocales Viajeras de la Vereda"</strong></p>
+        <p>Wordwall — Juego interactivo</p>
+        <p><span class="badge badge-yellow">Semanas 6-7</span></p>
+        <span class="activity-btn" style="background:#FF6F00;">[Abrir evaluación]</span>
+      </div>
+    </div>
+    <div class="activity">
+      <div class="activity-header" style="background: #2E7D32;">🏆 Evaluación Sumativa</div>
+      <div class="activity-body">
+        <p><strong>"Mi Álbum de Vocales"</strong></p>
+        <p>Kahoot! — Quiz gamificado</p>
+        <p><span class="badge badge-green">Semana 8</span></p>
+        <span class="activity-btn" style="background:#2E7D32;">[Abrir evaluación]</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="card" style="margin-top: 16px;">
+    <h2>📊 Cuestionario de Evaluación del EVA</h2>
+    <p>Instrumento para evaluar la pertinencia, usabilidad y efectividad de este Entorno Virtual de Aprendizaje. Dirigido a padres de familia y acudientes.</p>
+    <div class="info-box">
+      <p>📋 <strong>Enlace al cuestionario:</strong> [Insertar enlace de Google Forms para evaluar el EVA]</p>
+    </div>
+  </div>
+</div>
+
+<!-- ===== GESTIÓN ===== -->
+<div class="section" id="gestion">
+  <div class="card">
+    <h2>⚙️ Área de Gestión y Administración</h2>
+    <p>Registro de usuarios, seguimiento de notas y progreso individual de cada estudiante.</p>
+  </div>
+
+  <div class="card">
+    <h3>👥 Usuarios Registrados</h3>
+    <table class="grade-table">
+      <tr><th>Estudiante</th><th>Rol</th><th>Estado</th></tr>
+      <tr><td>Estudiante 1</td><td>Estudiante</td><td><span class="badge badge-green">Activo</span></td></tr>
+      <tr><td>Estudiante 2</td><td>Estudiante</td><td><span class="badge badge-green">Activo</span></td></tr>
+      <tr><td>Estudiante 3</td><td>Estudiante</td><td><span class="badge badge-green">Activo</span></td></tr>
+      <tr><td>Estudiante 4</td><td>Estudiante</td><td><span class="badge badge-green">Activo</span></td></tr>
+      <tr><td>Estudiante 5</td><td>Estudiante</td><td><span class="badge badge-green">Activo</span></td></tr>
+      <tr><td>Acudiente 1 (Padre/madre Est. 1)</td><td>Observador</td><td><span class="badge badge-green">Activo</span></td></tr>
+      <tr><td>Acudiente 2 (Padre/madre Est. 2)</td><td>Observador</td><td><span class="badge badge-green">Activo</span></td></tr>
+      <tr><td>Prof. Delia Bastidas</td><td>Docente</td><td><span class="badge badge-blue">Administrador</span></td></tr>
+    </table>
+  </div>
+
+  <div class="card">
+    <h3>📊 Registro de Calificaciones</h3>
+    <table class="grade-table">
+      <tr><th>Estudiante</th><th>Diagnóstica (Sem. 2)</th><th>Formativa (Sem. 7)</th><th>Sumativa (Sem. 8)</th><th>Progreso</th></tr>
+      <tr><td>Estudiante 1</td><td>3/5 (60%)</td><td>4/5 (80%)</td><td>5/5 (100%)</td><td><span class="badge badge-green">Excelente</span></td></tr>
+      <tr><td>Estudiante 2</td><td>4/5 (80%)</td><td>5/5 (100%)</td><td>5/5 (100%)</td><td><span class="badge badge-green">Excelente</span></td></tr>
+      <tr><td>Estudiante 3</td><td>2/5 (40%)</td><td>3/5 (60%)</td><td>4/5 (80%)</td><td><span class="badge badge-green">Bueno</span></td></tr>
+      <tr><td>Estudiante 4</td><td>3/5 (60%)</td><td>4/5 (80%)</td><td>4/5 (80%)</td><td><span class="badge badge-green">Bueno</span></td></tr>
+      <tr><td>Estudiante 5</td><td>3/5 (60%)</td><td>4/5 (80%)</td><td>3/5 (60%)</td><td><span class="badge badge-yellow">En proceso</span></td></tr>
+    </table>
+  </div>
+</div>
+
+<!-- ===== COMUNICACIÓN ===== -->
+<div class="section" id="comunicacion">
+  <div class="card">
+    <h2>💬 Área de Comunicación</h2>
+    <p>Espacios de interacción entre la docente y las familias para acompañar el proceso de aprendizaje de los niños.</p>
+  </div>
+
+  <div class="grid-2">
+    <div class="card card-blue">
+      <h3>📢 Foro de Clase</h3>
+      <div class="forum-post">
+        <div class="author">Prof. Delia Bastidas</div>
+        <div class="msg">¡Bienvenidos al foro! Aquí pueden compartir sus experiencias y preguntas sobre las actividades que realizamos con los niños.</div>
+        <div class="time">Semana 1</div>
+      </div>
+      <div class="forum-post">
+        <div class="author">Acudiente — Est. 2</div>
+        <div class="msg">Profe, mi hijo disfrutó mucho el video de las vocales. Pregunta si mañana van a usar la tablet.</div>
+        <div class="time">Semana 1</div>
+      </div>
+      <div class="forum-post">
+        <div class="author">Prof. Delia Bastidas</div>
+        <div class="msg">¡Qué bueno! Sí, mañana usaremos la tablet para la evaluación diagnóstica. Es una actividad muy divertida.</div>
+        <div class="time">Semana 1</div>
+      </div>
+      <div class="forum-post">
+        <div class="author">Acudiente — Est. 4</div>
+        <div class="msg">Mi hija ya reconoce la A y la O. Con la E todavía se confunde un poco.</div>
+        <div class="time">Semana 4</div>
+      </div>
+    </div>
+
+    <div class="card card-green">
+      <h3>📧 Canales de Comunicación</h3>
+      <div class="info-box" style="background:#E8F5E9;">
+        <p>📹 <strong>Videollamadas:</strong> Google Meet integrado para reuniones virtuales con los padres cuando sea necesario.</p>
+      </div>
+      <div class="info-box" style="background:#FFF3E0; margin-top: 10px;">
+        <p>💬 <strong>Comentarios en tareas:</strong> Los padres pueden dejar comentarios en cada actividad y recibir retroalimentación de la docente.</p>
+      </div>
+      <div class="info-box" style="background:#F3E5F5; margin-top: 10px;">
+        <p>✉️ <strong>Correo electrónico:</strong> Canal directo para comunicaciones individuales entre la docente y las familias.</p>
+      </div>
+      <div class="info-box" style="margin-top: 10px;">
+        <p>📱 <strong>Notificaciones:</strong> Los padres reciben alertas cuando se publica nuevo material o una actividad.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== SERVICIOS ===== -->
+<div class="section" id="servicios">
+  <div class="card">
+    <h2>📋 Área de Servicios e Información</h2>
+    <p>Información general del curso, agenda de actividades y recursos institucionales.</p>
+  </div>
+
+  <div class="grid-2">
+    <div class="card card-accent">
+      <h3>📅 Agenda del Curso</h3>
+      <div class="agenda-item">
+        <div class="agenda-date"><div class="day">S1</div><div class="month">AGO</div></div>
+        <div><strong>Inicio del curso</strong><p style="font-size:12px;">Publicación del video introductorio para padres</p></div>
+      </div>
+      <div class="agenda-item">
+        <div class="agenda-date"><div class="day">S2</div><div class="month">AGO</div></div>
+        <div><strong>Evaluación diagnóstica</strong><p style="font-size:12px;">Aplicación de Google Forms en el aula</p></div>
+      </div>
+      <div class="agenda-item">
+        <div class="agenda-date" style="background:#FF6F00;"><div class="day">S7</div><div class="month">SEP</div></div>
+        <div><strong>Evaluación formativa</strong><p style="font-size:12px;">Wordwall — Las Vocales Viajeras</p></div>
+      </div>
+      <div class="agenda-item">
+        <div class="agenda-date" style="background:#2E7D32;"><div class="day">S8</div><div class="month">OCT</div></div>
+        <div><strong>Evaluación sumativa final</strong><p style="font-size:12px;">Kahoot! — Mi Álbum de Vocales</p></div>
+      </div>
+    </div>
+
+    <div class="card card-green">
+      <h3>ℹ️ Información Institucional</h3>
+      <p><strong>Institución:</strong> I.E. Técnica Alfonso Vanegas Sierra</p>
+      <p><strong>Ubicación:</strong> San Miguel de Sema, Boyacá</p>
+      <p><strong>Zona:</strong> Rural</p>
+      <p><strong>Docente:</strong> Delia Liliana Bastidas Velandia</p>
+      <p><strong>Programa:</strong> Especialización en Aplicación de TIC para la Enseñanza — Universidad de Santander</p>
+      <p><strong>Curso:</strong> Entornos Virtuales de Aprendizaje</p>
+
+      <div class="info-box" style="margin-top: 14px;">
+        <p>📞 <strong>Horario de atención:</strong> Lunes a viernes, 7:00 a.m. - 12:00 m.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+</div>
+
+<!-- FOOTER -->
+<div class="footer">
+  <p>Entorno Virtual de Aprendizaje — Las Vocales de mi Vereda</p>
+  <p>I.E. Técnica Alfonso Vanegas Sierra | San Miguel de Sema, Boyacá | 2026</p>
+  <p style="margin-top: 6px;">Universidad de Santander — Especialización en Aplicación de TIC para la Enseñanza</p>
+</div>
+
+<script>
+function showSection(id) {
+  document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+  document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  event.target.classList.add('active');
+  window.scrollTo(0, 0);
+}
+</script>
+</body>
+</html>
